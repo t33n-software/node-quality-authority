@@ -1,0 +1,31 @@
+{
+  "name": "node-quality-authority",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.5.1",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.5.1",
+      "onFail": "error"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "26.10.0",
+      "onFail": "error"
+    }
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "typecheck": "tsc -b tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:"
+  }
+}
