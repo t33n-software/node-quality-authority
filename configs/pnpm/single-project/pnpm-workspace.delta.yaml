@@ -1,0 +1,12 @@
+###############################################################################
+# pnpm-workspace.yaml -- PNPM 11 Single-Project Supply-Chain Fortress
+#
+# Surface contract:
+# - Shared Fortress baseline: see ../TS_PACKAGE_MANAGER_PNPM_WORKSPACE_FORTRESS_CORE_REFERENCE_001.mdc
+# - Topology delta: single-project root-only semantics
+#
+# IMPORTANT:
+# There is intentionally NO `packages:` key in this file.
+# In PNPM 11, omitting `packages` means the root project is the only workspace
+# package. That is the correct single-project posture.
+###############################################################################

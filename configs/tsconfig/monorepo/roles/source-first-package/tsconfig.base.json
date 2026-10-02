@@ -1,0 +1,103 @@
+{
+  /**
+   * Description:
+   * Enables schema-aware validation for the source-first package role.
+   *
+   * Architectural decision:
+   * The no-output source contract remains an explicit and independently
+   * validated TSConfig surface.
+   *
+   * Example:
+   * "$schema": "https://json.schemastore.org/tsconfig"
+   */
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  /**
+   * Description:
+   * Inherits the canonical universal root compiler policy.
+   *
+   * Architectural decision:
+   * Source-first delivery changes delivery truth only and must not duplicate
+   * core strictness or package-resolution policy.
+   *
+   * Example:
+   * "extends": "./tsconfig.base.json"
+   */
+  "extends": "./tsconfig.base.json",
+
+  /**
+   * Description:
+   * Groups the source-first delivery contract.
+   *
+   * Architectural decision:
+   * This role owns source delivery behavior, while a separate validation lane
+   * owns any graph-producing declaration output.
+   *
+   * Example:
+   * "compilerOptions": { "noEmit": true }
+   */
+  "compilerOptions": {
+    /**
+     * Description:
+     * Preserves authored module syntax for controlled source consumers.
+     *
+     * Architectural decision:
+     * Source-first consumers process authored modules; a rolling module mode is
+     * not implied by that fact.
+     *
+     * Example:
+     * "module": "Preserve"
+     */
+    "module": "Preserve",
+
+    /**
+     * Description:
+     * Uses bundler-aware lookup for controlled source consumers.
+     *
+     * Architectural decision:
+     * This is source-consumer resolution, not a direct Node runtime resolver.
+     *
+     * Example:
+     * "moduleResolution": "Bundler"
+     */
+    "moduleResolution": "Bundler",
+
+    /**
+     * Description:
+     * Prevents the source-first lane from producing a standalone artifact.
+     *
+     * Architectural decision:
+     * Delivery remains source-owned; declaration production, when required, is
+     * modeled separately.
+     *
+     * Example:
+     * "noEmit": true
+     */
+    "noEmit": true,
+
+    /**
+     * Description:
+     * Keeps raw TypeScript extension imports closed by default.
+     *
+     * Architectural decision:
+     * A source-first package requires an explicit narrower runtime capability
+     * before .ts specifiers become truthful.
+     *
+     * Example:
+     * "allowImportingTsExtensions": false
+     */
+    "allowImportingTsExtensions": false,
+
+    /**
+     * Description:
+     * Keeps ambient type packages opt-in at this package role.
+     *
+     * Architectural decision:
+     * Source-first delivery does not imply Node, browser, or framework globals.
+     *
+     * Example:
+     * "types": []
+     */
+    "types": []
+  }
+}

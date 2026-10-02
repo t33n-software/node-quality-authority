@@ -1,0 +1,91 @@
+{
+  /**
+   * Description:
+   * Enables schema-aware validation for the declaration-artifact role.
+   *
+   * Architectural decision:
+   * This terminal producer remains a first-class TSConfig surface and must be
+   * structurally validated.
+   *
+   * Example:
+   * "$schema": "https://json.schemastore.org/tsconfig"
+   */
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  /**
+   * Description:
+   * Inherits abstract project-reference and declaration capability.
+   *
+   * Architectural decision:
+   * The terminal role specializes only delivery truth and never duplicates the
+   * universal or abstract-library policy.
+   *
+   * Example:
+   * "extends": "./tsconfig.lib.base.json"
+   */
+  "extends": "./tsconfig.lib.base.json",
+
+  /**
+   * Description:
+   * Groups declaration-artifact output overrides.
+   *
+   * Architectural decision:
+   * Output ownership is selected centrally by the terminal role, not by leaves.
+   *
+   * Example:
+   * "compilerOptions": { "emitDeclarationOnly": true }
+   */
+  "compilerOptions": {
+    /**
+     * Description:
+     * Reopens compiler output for this terminal producer.
+     *
+     * Architectural decision:
+     * A package that promises declarations must own real output rather than
+     * pretending a no-emit consumer can satisfy project references.
+     *
+     * Example:
+     * "noEmit": false
+     */
+    "noEmit": false,
+
+    /**
+     * Description:
+     * Restricts output to declarations and declaration maps.
+     *
+     * Architectural decision:
+     * This package must not emit JavaScript when its metadata promises only a
+     * type artifact.
+     *
+     * Example:
+     * "emitDeclarationOnly": true
+     */
+    "emitDeclarationOnly": true,
+
+    /**
+     * Description:
+     * Disables JavaScript source maps.
+     *
+     * Architectural decision:
+     * The lane emits no JavaScript, so JavaScript source-map ownership would be
+     * false and must remain absent.
+     *
+     * Example:
+     * "sourceMap": false
+     */
+    "sourceMap": false,
+
+    /**
+     * Description:
+     * Keeps raw TypeScript extension imports closed.
+     *
+     * Architectural decision:
+     * A built declaration artifact must not expose a raw source-path import
+     * contract.
+     *
+     * Example:
+     * "allowImportingTsExtensions": false
+     */
+    "allowImportingTsExtensions": false
+  }
+}
