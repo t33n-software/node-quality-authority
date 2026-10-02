@@ -1,0 +1,92 @@
+{
+  /**
+   * Enables schema-aware validation for the fallback runtime-test config.
+   *
+   * Detailed behavior:
+   * - Keeps the test config self-describing even in migration mode.
+   * - Avoids configuration drift between fallback and canonical layouts.
+   *
+   * Architectural decision:
+   * Keep the schema reference because this remains a first-class TSConfig surface.
+   *
+   * Example:
+   * "$schema": "https://json.schemastore.org/tsconfig"
+   */
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  /**
+   * Reuses the fallback Node baseline for runtime tests.
+   *
+   * Detailed behavior:
+   * - Tests stay aligned with the same alias and strictness behavior as the fallback Node lane.
+   * - Source ownership is expressed through include lists instead of project references.
+   *
+   * Architectural decision:
+   * Extend `tsconfig.node.json` so the migration path does not fragment compiler behavior.
+   *
+   * Example:
+   * "extends": "./tsconfig.node.json"
+   */
+  "extends": "./tsconfig.node.json",
+
+  /**
+   * Description:
+   * Groups fallback runtime-test consumer output and ambient-type deltas.
+   *
+   * Architectural decision:
+   * The fallback test lane remains non-producing while explicitly modeling its
+   * Vitest-on-Node host.
+   *
+   * Example:
+   * "compilerOptions": { "noEmit": true }
+   */
+  "compilerOptions": {
+    /**
+     * Keeps runtime tests in pure verification mode.
+     *
+     * Detailed behavior:
+     * - The fallback test lane validates code without emitting artifacts.
+     * - It stays consumer-like even though no reference graph exists yet.
+     *
+     * Architectural decision:
+     * Use `true` because tests do not own runtime output in the fallback model either.
+     *
+     * Example:
+     * "noEmit": true
+     */
+    "noEmit": true,
+
+    /**
+     * Opens only the Vitest and Node ambient globals required by the runtime-test lane.
+     *
+     * Detailed behavior:
+     * - The shared base keeps ambient types closed.
+     * - This config adds only the globals actually needed by Vitest-on-Node.
+     *
+     * Architectural decision:
+     * Use `["vitest/globals", "node"]` because the fallback runtime tests still execute in that environment.
+     *
+     * Example:
+     * "types": ["vitest/globals", "node"]
+     */
+    "types": ["vitest/globals", "node"]
+  },
+
+  /**
+   * Defines the fallback runtime-test-owned file surface.
+   *
+   * Detailed behavior:
+   * - Includes test files and shared test constants directly.
+   * - Avoids project references while the graph remains transitional.
+   *
+   * Architectural decision:
+   * Keep ownership local through `include` so tests stay runnable without producer prebuild.
+   *
+   * Example:
+   * "include": ["test/**\/*.ts", "tooling/testing/constants/**\/*.ts"]
+   */
+  "include": [
+    "test/**/*.ts",
+    "tooling/testing/constants/**/*.ts"
+  ]
+}

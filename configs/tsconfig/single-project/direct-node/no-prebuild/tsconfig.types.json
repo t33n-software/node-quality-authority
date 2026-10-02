@@ -1,0 +1,108 @@
+{
+  /**
+   * Enables schema-aware validation for the fallback type-only test config.
+   *
+   * Detailed behavior:
+   * - Keeps the type-only lane explicit for editors and tooling.
+   * - Preserves formal config hygiene during migration.
+   *
+   * Architectural decision:
+   * Keep the schema reference because the fallback type lane remains an explicit contract surface.
+   *
+   * Example:
+   * "$schema": "https://json.schemastore.org/tsconfig"
+   */
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  /**
+   * Reuses the fallback Node baseline for type-only tests.
+   *
+   * Detailed behavior:
+   * - Keeps type-only tests aligned to the same fallback alias and strictness rules.
+   * - Uses include-based ownership instead of project references.
+   *
+   * Architectural decision:
+   * Extend `tsconfig.node.json` so the fallback type lane does not invent a second baseline.
+   *
+   * Example:
+   * "extends": "./tsconfig.node.json"
+   */
+  "extends": "./tsconfig.node.json",
+
+  /**
+   * Description:
+   * Groups fallback type-only consumer output and ambient-type deltas.
+   *
+   * Architectural decision:
+   * Type tests remain non-producing even when the repository has not yet
+   * established a project-reference graph.
+   *
+   * Example:
+   * "compilerOptions": { "noEmit": true }
+   */
+  "compilerOptions": {
+    /**
+     * Keeps the type-only lane in verification mode.
+     *
+     * Detailed behavior:
+     * - The lane validates repository-owned type contracts only.
+     * - It never emits JavaScript or declarations.
+     *
+     * Architectural decision:
+     * Use `true` because type-only suites are validation lanes, not artifact producers.
+     *
+     * Example:
+     * "noEmit": true
+     */
+    "noEmit": true,
+
+    /**
+     * Opens only the Vitest and Node globals required by the type-only test lane.
+     *
+     * Detailed behavior:
+     * - Ambient types remain opt-in.
+     * - The lane receives exactly the globals it needs and nothing broader.
+     *
+     * Architectural decision:
+     * Use `["vitest/globals", "node"]` because these type-only tests still run in a Vitest-on-Node environment.
+     *
+     * Example:
+     * "types": ["vitest/globals", "node"]
+     */
+    "types": ["vitest/globals", "node"]
+  },
+
+  /**
+   * Declares that no extra exclusions are needed beyond the explicit include list.
+   *
+   * Detailed behavior:
+   * - The fallback type-only scope is already tightly bounded.
+   * - An empty exclude keeps that intent visible.
+   *
+   * Architectural decision:
+   * Keep `[]` because this lane already defines a narrow include surface.
+   *
+   * Example:
+   * "exclude": []
+   */
+  "exclude": [],
+
+  /**
+   * Defines the fallback type-only consumer surface.
+   *
+   * Detailed behavior:
+   * - Includes `.test-d.ts`, supporting fixtures, and shared test constants directly.
+   * - Avoids project references while the graph is not yet stable.
+   *
+   * Architectural decision:
+   * Keep the include list explicit so type-only suites remain deterministic in the fallback model.
+   *
+   * Example:
+   * "include": ["test/types/**\/*.test-d.ts", "test/types/**\/*.ts", "tooling/testing/constants/**\/*.ts"]
+   */
+  "include": [
+    "test/types/**/*.test-d.ts",
+    "test/types/**/*.ts",
+    "tooling/testing/constants/**/*.ts"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "categories": [
+    {
+      "id": "single-project/direct-node",
+      "title": "Single-project direct Node application with the strong declaration-producer graph",
+      "artifacts": {
+        "tsconfig": "configs/tsconfig/single-project/direct-node/",
+        "vitest": "configs/vitest/single-project/direct-node/",
+        "pnpm": "configs/pnpm/single-project/pnpm-workspace.delta.yaml"
+      }
+    },
+    {
+      "id": "single-project/direct-node/no-prebuild",
+      "title": "Single-project direct Node fallback without a declaration prebuild (transitional)",
+      "artifacts": {
+        "tsconfig": "configs/tsconfig/single-project/direct-node/no-prebuild/",
+        "vitest": "configs/vitest/single-project/direct-node/",
+        "pnpm": "configs/pnpm/single-project/pnpm-workspace.delta.yaml"
+      }
+    },
+    {
+      "id": "single-project/bundler-owned",
+      "title": "Single-project bundler-owned Node application or server",
+      "artifacts": {
+        "tsconfig": "configs/tsconfig/single-project/bundler-owned/",
+        "vitest": "configs/vitest/single-project/bundler-owned/",
+        "tsdown": "configs/tsdown/single-project/bundler-owned/",
+        "pnpm": "configs/pnpm/single-project/pnpm-workspace.delta.yaml"
+      }
+    },
+    {
+      "id": "monorepo",
+      "title": "Workspace with role templates and thin package leaves",
+      "artifacts": {
+        "tsconfig": "configs/tsconfig/monorepo/",
+        "vitest": "configs/vitest/monorepo/",
+        "pnpm": "configs/pnpm/monorepo/pnpm-workspace.delta.yaml"
+      }
+    }
+  ]
+}

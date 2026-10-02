@@ -1,0 +1,139 @@
+{
+  /**
+   * Description:
+   * Enables schema-aware validation for the graph-aware typecheck role.
+   *
+   * Architectural decision:
+   * Typecheck is a dedicated declaration-only validation producer, not an
+   * implicit behavior of a runtime, test, or bundler lane.
+   *
+   * Example:
+   * "$schema": "https://json.schemastore.org/tsconfig"
+   */
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  /**
+   * Description:
+   * Inherits the canonical universal root compiler-policy materialization.
+   *
+   * Architectural decision:
+   * Validation must reuse strictness, package resolution, and ambient-neutral
+   * defaults instead of recreating a separate compiler universe.
+   *
+   * Example:
+   * "extends": "./tsconfig.base.json"
+   */
+  "extends": "./tsconfig.base.json",
+
+  /**
+   * Description:
+   * Groups the reusable declaration-only validation contract.
+   *
+   * Architectural decision:
+   * Every typecheck leaf inherits these producer invariants and adds only local
+   * source, graph, host, and build-state facts.
+   *
+   * Example:
+   * "compilerOptions": { "emitDeclarationOnly": true }
+   */
+  "compilerOptions": {
+    /**
+     * Description:
+     * Enables project-reference build-mode participation.
+     *
+     * Architectural decision:
+     * A graph-aware validation producer must be composite rather than a
+     * no-output consumer.
+     *
+     * Example:
+     * "composite": true
+     */
+    "composite": true,
+
+    /**
+     * Description:
+     * Enables declaration generation required by referenced projects.
+     *
+     * Architectural decision:
+     * Build-mode validation must expose a real declaration producer contract.
+     *
+     * Example:
+     * "declaration": true
+     */
+    "declaration": true,
+
+    /**
+     * Description:
+     * Enables declaration maps for cross-project navigation.
+     *
+     * Architectural decision:
+     * Validation output should preserve editor traceability without becoming
+     * runtime output.
+     *
+     * Example:
+     * "declarationMap": true
+     */
+    "declarationMap": true,
+
+    /**
+     * Description:
+     * Requires exports to be independently declaration-generatable.
+     *
+     * Architectural decision:
+     * Public validation surfaces must not depend on hidden whole-program
+     * inference.
+     *
+     * Example:
+     * "isolatedDeclarations": true
+     */
+    "isolatedDeclarations": true,
+
+    /**
+     * Description:
+     * Reopens compiler output for build-mode validation.
+     *
+     * Architectural decision:
+     * A TypeScript build graph cannot use a no-emit consumer as its producer.
+     *
+     * Example:
+     * "noEmit": false
+     */
+    "noEmit": false,
+
+    /**
+     * Description:
+     * Restricts validation output to declarations.
+     *
+     * Architectural decision:
+     * Runtime JavaScript remains owned by the selected delivery lane.
+     *
+     * Example:
+     * "emitDeclarationOnly": true
+     */
+    "emitDeclarationOnly": true,
+
+    /**
+     * Description:
+     * Excludes internal declarations from validation artifacts.
+     *
+     * Architectural decision:
+     * Internal implementation symbols must not leak through graph output.
+     *
+     * Example:
+     * "stripInternal": true
+     */
+    "stripInternal": true,
+
+    /**
+     * Description:
+     * Keeps ambient type packages closed at the generic validation role.
+     *
+     * Architectural decision:
+     * Node, browser, and framework globals are leaf-specific host facts.
+     *
+     * Example:
+     * "types": []
+     */
+    "types": []
+  }
+}

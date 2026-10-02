@@ -1,0 +1,152 @@
+{
+  /**
+   * Enables schema-aware validation for the fallback Node config.
+   *
+   * Detailed behavior:
+   * - Keeps the file self-describing for editors and tooling.
+   * - Preserves the same config hygiene as the canonical boilerplate.
+   *
+   * Architectural decision:
+   * Keep the SchemaStore reference even in fallback mode because this config
+   * remains an explicit repository surface.
+   *
+   * Example:
+   * "$schema": "https://json.schemastore.org/tsconfig"
+   */
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  /**
+   * Reuses the shared baseline while staying a no-emit Node-oriented fallback surface.
+   *
+   * Detailed behavior:
+   * - The canonical boilerplate owns the shared strictness and alias defaults.
+   * - This fallback adds only the minimum Node-specific deltas needed to keep the
+   *   repository runnable before the producer graph is ready.
+   *
+   * Architectural decision:
+   * Extend the canonical base instead of forking it, even in the fallback path.
+   *
+   * Example:
+   * "extends": "./tsconfig.base.json"
+   */
+  "extends": "./tsconfig.base.json",
+
+  /**
+   * Description:
+   * Groups the transitional mixed-JavaScript and direct-Node fallback deltas.
+   *
+   * Architectural decision:
+   * The fallback retains strict checking and fixed Node semantics while avoiding
+   * a project-reference producer graph.
+   *
+   * Example:
+   * "compilerOptions": { "allowJs": true, "checkJs": true }
+   */
+  "compilerOptions": {
+    /**
+     * Allows `.js` and `.mjs` files to participate in fallback tooling flows.
+     *
+     * Detailed behavior:
+     * - Keeps config and utility edges interoperable while the graph is still in migration.
+     * - Prevents the fallback path from assuming an unrealistic TS-only world.
+     *
+     * Architectural decision:
+     * Use `true` because the transitional Node surface still needs practical JS interop.
+     *
+     * Example:
+     * "allowJs": true
+     */
+    "allowJs": true,
+
+    /**
+     * Type-checks every JavaScript file admitted by the fallback capability line.
+     *
+     * Architectural decision:
+     * Reopening `allowJs` without `checkJs` would create an unchecked source
+     * surface and is not valid under the universal strict policy.
+     *
+     * Example:
+     * "checkJs": true
+     */
+    "checkJs": true,
+
+    /**
+     * Description:
+     * Keeps the fallback Node lane on the fixed Node module-semantics mode.
+     *
+     * Architectural decision:
+     * Node20 is the stable default; NodeNext remains a registered exception.
+     *
+     * Example:
+     * "module": "Node20"
+     */
+    "module": "Node20",
+
+    /**
+     * Description:
+     * Selects the Node16 resolver family required by the Node20 module mode.
+     *
+     * Architectural decision:
+     * This prevents the generic Bundler resolver from surviving inheritance.
+     *
+     * Example:
+     * "moduleResolution": "Node16"
+     */
+    "moduleResolution": "Node16",
+
+    /**
+     * Disables isolated declaration restrictions for the fallback Node lane.
+     *
+     * Detailed behavior:
+     * - The fallback lane is not a declaration producer.
+     * - `allowJs` and transitional ownership make the stricter declaration posture unnecessary here.
+     *
+     * Architectural decision:
+     * Use `false` because this layout is intentionally not a producer graph.
+     *
+     * Example:
+     * "isolatedDeclarations": false
+     */
+    "isolatedDeclarations": false,
+
+    /**
+     * Opens only the Node ambient surface needed by the fallback lane.
+     *
+     * Detailed behavior:
+     * - The shared base keeps ambient types closed.
+     * - This config re-opens only the Node globals it truly needs.
+     *
+     * Architectural decision:
+     * Use `["node"]` because the fallback lane still models a host-Node surface.
+     *
+     * Example:
+     * "types": ["node"]
+     */
+    "types": ["node"]
+  },
+
+  /**
+   * Defines the fallback Node-owned source surface.
+   *
+   * Detailed behavior:
+   * - Includes repository-owned code, scripts, tooling, and root config entrypoints.
+   * - Leaves project references out of the model entirely.
+   *
+   * Architectural decision:
+   * Keep the include list explicit so the fallback lane remains deterministic even without a producer graph.
+   *
+   * Example:
+   * "include": ["src/**\/*.ts", "env/**\/*.ts", "scripts/**\/*.ts"]
+   */
+  "include": [
+    "src/**/*.ts",
+    "env/**/*.ts",
+    "scripts/**/*.ts",
+    "tooling/**/*.ts",
+    "global.d.ts",
+    "*.config.ts",
+    "tooling/scripts/extractors/pvs/dampsoft",
+    "tooling/scripts/extractors/pvs/evident",
+    "data/reference/pvs/dampsoft/output"
+  ]
+}

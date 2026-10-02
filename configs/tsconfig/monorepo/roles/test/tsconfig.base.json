@@ -1,0 +1,63 @@
+{
+  /**
+   * Description:
+   * Enables schema-aware validation for the runtime-test consumer role.
+   *
+   * Architectural decision:
+   * Runtime tests are an explicit non-emitting lane rather than a variation of
+   * a runtime or declaration producer.
+   *
+   * Example:
+   * "$schema": "https://json.schemastore.org/tsconfig"
+   */
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  /**
+   * Description:
+   * Inherits the canonical universal root compiler policy.
+   *
+   * Architectural decision:
+   * The test role adds only consumer-specific output and ambient-type facts.
+   *
+   * Example:
+   * "extends": "./tsconfig.base.json"
+   */
+  "extends": "./tsconfig.base.json",
+
+  /**
+   * Description:
+   * Groups runtime-test consumer deltas.
+   *
+   * Architectural decision:
+   * Tests must remain non-producing while explicitly modeling their host globals.
+   *
+   * Example:
+   * "compilerOptions": { "noEmit": true }
+   */
+  "compilerOptions": {
+    /**
+     * Description:
+     * Prevents the runtime-test lane from emitting artifacts.
+     *
+     * Architectural decision:
+     * Test execution does not create a competing JavaScript or declaration owner.
+     *
+     * Example:
+     * "noEmit": true
+     */
+    "noEmit": true,
+
+    /**
+     * Description:
+     * Reopens only Vitest and Node ambient declarations.
+     *
+     * Architectural decision:
+     * Test globals are explicit consumer facts and must not leak into production
+     * or unrelated validation lanes.
+     *
+     * Example:
+     * "types": ["vitest/globals", "node"]
+     */
+    "types": ["vitest/globals", "node"]
+  }
+}

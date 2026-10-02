@@ -1,0 +1,64 @@
+{
+  /**
+   * Description:
+   * Enables schema-aware validation for the type-only consumer role.
+   *
+   * Architectural decision:
+   * Type contracts are validated in a distinct non-emitting lane rather than
+   * being coupled to runtime test or declaration producer behavior.
+   *
+   * Example:
+   * "$schema": "https://json.schemastore.org/tsconfig"
+   */
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  /**
+   * Description:
+   * Inherits the canonical universal root compiler policy.
+   *
+   * Architectural decision:
+   * The role adds only type-consumer output and ambient facts.
+   *
+   * Example:
+   * "extends": "./tsconfig.base.json"
+   */
+  "extends": "./tsconfig.base.json",
+
+  /**
+   * Description:
+   * Groups type-only validation consumer deltas.
+   *
+   * Architectural decision:
+   * Type tests remain non-producing while their Vitest-on-Node environment is
+   * modeled explicitly.
+   *
+   * Example:
+   * "compilerOptions": { "noEmit": true }
+   */
+  "compilerOptions": {
+    /**
+     * Description:
+     * Prevents type-only suites from emitting runtime or declaration artifacts.
+     *
+     * Architectural decision:
+     * Contract validation must never become a second producer lane.
+     *
+     * Example:
+     * "noEmit": true
+     */
+    "noEmit": true,
+
+    /**
+     * Description:
+     * Reopens only Vitest and Node ambient declarations required by type tests.
+     *
+     * Architectural decision:
+     * Test globals remain scoped to this lane and do not alter universal or
+     * production ambient policy.
+     *
+     * Example:
+     * "types": ["vitest/globals", "node"]
+     */
+    "types": ["vitest/globals", "node"]
+  }
+}

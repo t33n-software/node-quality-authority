@@ -1,0 +1,117 @@
+###############################################################################
+# pnpm-workspace.yaml -- PNPM 11 Monorepo Supply-Chain Fortress
+#
+# Surface contract:
+# - Shared Fortress baseline: see ../TS_PACKAGE_MANAGER_PNPM_WORKSPACE_FORTRESS_CORE_REFERENCE_001.mdc
+# - Topology delta: monorepo workspace boundary, ownership, and recursive behavior
+###############################################################################
+
+########################################
+# Workspace topology
+########################################
+
+# `packages`
+# Simple: Defines which directories are part of the monorepo in the first place.
+# Details: These globs form the governance boundary for filters, recursion,
+# the shared lockfile, and workspace ownership.
+# Example: `apps/*` includes all direct child packages under `apps/`.
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "tooling/*"
+  - "!**/test/**"
+
+# `includeWorkspaceRoot`
+# Simple: Keeps the root project out of recursive commands by default.
+# Details: This ensures the root remains the control plane and is not accidentally
+# treated like a leaf package.
+# Example: `false` means that `pnpm -r test` will not automatically run in the root.
+includeWorkspaceRoot: false
+
+# `sharedWorkspaceLockfile`
+# Simple: Enforces a shared lockfile for the entire monorepo.
+# Details: This reduces uncontrolled drift between packages and centralizes review
+# and auditing.
+# Example: All packages are governed via a root `pnpm-lock.yaml`.
+sharedWorkspaceLockfile: true
+
+# `disallowWorkspaceCycles`
+# Simple: Abruptly aborts the installation process in case of workspace cycles.
+# Details: Cycles complicate topological ordering, build order, and root-cause analysis.
+# Example: A package `a` must not point back to `b` and back via workspace dependencies.
+disallowWorkspaceCycles: true
+
+# `failIfNoMatch`
+# Simple: Causes filter operations to fail if no package is matched.
+# Details: This prevents silent green CI runs that actually did nothing.
+# Example: `pnpm --filter missing-package test` ends with an error instead of a silent no-op.
+failIfNoMatch: true
+
+########################################
+# Workspace ownership and save policy
+########################################
+
+# `linkWorkspacePackages`
+# Simple: Prevents implicit local linking when ranges happen to match.
+# Details: Local ownership must be explicit via `workspace:`, not via
+# a convenient implicit side effect.
+# Example: `"foo": "^1.0.0"` must not be silently resolved locally instead of from the registry.
+linkWorkspacePackages: false
+
+# `preferWorkspacePackages`
+# Simple: Does NOT automatically prefer local packages over the registry.
+# Details: Here too, it is about explicit rather than implicit ownership.
+# Example: A local copy is only used if `workspace:` deliberately requests it.
+preferWorkspacePackages: false
+
+# `saveWorkspaceProtocol`
+# Simple: Saves local workspace dependencies with an explicit `workspace:` prefix.
+# Details: `true` plus `savePrefix: ''` writes exact local ownership into the manifest.
+# Example: `workspace:1.2.3` instead of an unclear `^1.2.3`.
+saveWorkspaceProtocol: true
+
+# `injectWorkspacePackages`
+# Simple: Prevents hard workspace injection by default.
+# Details: Injected dependencies are only permitted in genuine peer graph special cases,
+# not as a default.
+# Example: A package with deviating peer contexts is targeted for opt-in injection later.
+injectWorkspacePackages: false
+
+# `dedupeInjectedDeps`
+# Simple: Deduplicates injected dependencies when peer-wise safe.
+# Details: This is not a relaxation, but rather reduces unnecessary duplicates in special cases.
+# Example: Identical peer contexts lead to a reusable instance.
+dedupeInjectedDeps: true
+
+########################################
+# Dependency layout and anti-hoisting
+########################################
+
+# `hoistWorkspacePackages`
+# Simple: Prevents workspace packages from being pulled into hoisting paths.
+# Details: Local packages should be resolved via clean ownership, not via
+# hoisted visibility.
+# Example: Workspace packages remain at their explicit resolution path.
+hoistWorkspacePackages: false
+
+########################################
+# Peer dependency governance
+########################################
+
+# `resolvePeersFromWorkspaceRoot`
+# Simple: Unifies peer resolution via the root.
+# Details: This ensures workspace packages use the same root peers instead of divergent
+# shadow versions.
+# Example: Multiple packages resolve `eslint` against the same root version.
+resolvePeersFromWorkspaceRoot: true
+
+########################################
+# Per-package divergence surface
+########################################
+
+# `packageConfigs`
+# Simple: Replaces per-subproject `.npmrc` for package-specific deviations.
+# Details: The array remains empty until there is a genuinely necessary and reviewed
+# special rule per package.
+# Example: A legacy package could target `savePrefix: "~"` later.
+packageConfigs: []
