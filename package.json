@@ -1,5 +1,7 @@
 {
-  "name": "node-quality-authority",
+  "name": "@t33n-software/node-quality-authority",
+  "author": "t33n Software",
+  "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.5.1",
