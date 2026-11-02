@@ -144,9 +144,6 @@
     "scripts/**/*.ts",
     "tooling/**/*.ts",
     "global.d.ts",
-    "*.config.ts",
-    "tooling/scripts/extractors/pvs/dampsoft",
-    "tooling/scripts/extractors/pvs/evident",
-    "data/reference/pvs/dampsoft/output"
+    "*.config.ts"
   ]
 }
