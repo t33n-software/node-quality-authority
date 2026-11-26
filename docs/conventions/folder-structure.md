@@ -160,10 +160,22 @@ this convention binds only the folder grammar that carries it.
 territory: schema-pinned, versioned, and bound by the consuming homes through
 the three-pin contract. Its entries carry the category ID (identical to the
 folder path), the artifact map for each config family, and the proof map. It
-deliberately carries no derived fields: the ID is the path, and the topology
-and lane are won by splitting the path — never restated as second values. The
-registry document in the Knowledge Plane owns the taxonomy and the decision
-matrix; the instance and this document never redefine them.
+deliberately carries no derived fields inside the category entries: the ID is
+the path, and the topology and lane are won by splitting the path — never
+restated as second values. The registry document in the Knowledge Plane owns
+the taxonomy and the decision matrix; the instance and this document never
+redefine them.
+
+The instance carries one top-level `derivation` contract block beside
+`schemaVersion` and `categories`. It is a declaration, never a derived field:
+it names how the fleet reads tenant surfaces from this registry — the
+ecosystem package contract file, its parse format, the identity extraction
+(field and corepack form), the workspace document per package manager, the
+fortress baseline path, and the tenant-owned baseline keys. The facts live in
+this territory, the fleet carries only the readers, and no binding manifest
+restates them. A pinned registry instance without the block fails the tenant
+config verification fail-closed; the unit tests of this home prove the block
+against its own document.
 
 ## 6. Binding and proof forms
 

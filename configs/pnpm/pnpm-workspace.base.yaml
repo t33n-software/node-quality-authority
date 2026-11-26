@@ -115,7 +115,7 @@ strictSsl: true
 # Details: This is the control-plane engine-gate surface, not a blanket equality
 # target for every package-local runtime contract.
 # Example: A dependency that requires Node 27 is rejected by the root policy.
-nodeVersion: 26.10.0
+nodeVersion: 26.13.0
 
 # `engineStrict`
 # Simple: Makes engine checks hard instead of advisory.
