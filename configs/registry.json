@@ -1,5 +1,18 @@
 {
   "schemaVersion": 1,
+  "derivation": {
+    "contractFile": "package.json",
+    "format": "json",
+    "identity": {
+      "field": "packageManager",
+      "form": "corepack"
+    },
+    "workspaceFiles": {
+      "pnpm": "pnpm-workspace.yaml"
+    },
+    "baselineFile": "configs/pnpm/pnpm-workspace.base.yaml",
+    "tenantOwnedKeys": ["catalog"]
+  },
   "categories": [
     {
       "id": "single-project/direct-node",

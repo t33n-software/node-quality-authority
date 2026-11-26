@@ -4,16 +4,16 @@
   "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@12.5.1",
+  "packageManager": "pnpm@12.17.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "12.5.1",
+      "version": "12.17.0",
       "onFail": "error"
     },
     "runtime": {
       "name": "node",
-      "version": "26.10.0",
+      "version": "26.13.0",
       "onFail": "error"
     }
   },
@@ -23,6 +23,7 @@
     "typecheck": "tsc -b tsconfig.json"
   },
   "devDependencies": {
+    "@sindresorhus/is": "catalog:",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "typescript": "catalog:",
